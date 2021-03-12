@@ -5,7 +5,11 @@ const routes = [
     name: 'login',
     component: () => import('pages/Login.vue')
   },
-
+  {
+    path: '/register',
+    name: 'register',
+    component: () => import('pages/Register.vue')
+  },
   // Đăng xuất
   {
     path: '/logout',
@@ -16,6 +20,9 @@ const routes = [
   {
     path: '/',
     component: () => import('layouts/Layout.vue'),
+    meta: {
+      requiresAuth: false
+    },
     children: [
       {
         path: '',
@@ -48,72 +55,6 @@ const routes = [
         },
         name: 'newDetail',
         component: () => import('pages/NewDetail.vue')
-      }
-    ]
-  },
-  // admin
-  {
-    path: '/admin/',
-    component: () => import('layouts/MainLayout.vue'),
-    meta: {
-      requiresAuth: true
-    },
-    children: [
-      {
-        path: '',
-        meta: {
-          title: 'Thống kê'
-        },
-        name: 'dashboard',
-        component: () => import('pages/Dashboard.vue')
-      },
-      {
-        path: 'categories',
-        meta: {
-          title: 'Danh mục'
-        },
-        name: 'categories',
-        component: () => import('pages/Category.vue')
-      },
-      {
-        path: 'products',
-        meta: {
-          title: 'Sản phẩm'
-        },
-        name: 'products',
-        component: () => import('pages/Product.vue')
-      },
-      {
-        path: 'orders',
-        meta: {
-          title: 'Đơn hàng'
-        },
-        name: 'orders',
-        component: () => import('pages/Order.vue')
-      },
-      {
-        path: 'blogs',
-        meta: {
-          title: 'Tin tức'
-        },
-        name: 'blogs',
-        component: () => import('pages/Article.vue')
-      },
-      {
-        path: 'contracts',
-        meta: {
-          title: 'Liên hệ'
-        },
-        name: 'contracts',
-        component: () => import('pages/Contact.vue')
-      },
-      {
-        path: 'banner',
-        meta: {
-          title: 'banner'
-        },
-        name: 'banner',
-        component: () => import('pages/Banner.vue')
       }
     ]
   }

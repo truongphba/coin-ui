@@ -10,17 +10,17 @@
         active-color="blue"
         indicator-color="indigo-1"
       >
-        <q-route-tab :to="{name: 'market', query: { exchanges : 'bitfinex', currency : 'USDT' }}" class="tab-market" name="bitfinex"
+        <q-route-tab :to="{name: 'market', query: { exchanges : 'bitfinex', currency : 'USDT' }}" :class="{active: exchanges === 'bitfinex', 'tab-market' : true }" name="bitfinex"
                      label="Bitfinex"/>
-        <q-route-tab :to="{name: 'market', query: { exchanges : 'binances', currency : 'USDT' }}" class="tab-market" name="binances"
+        <q-route-tab :to="{name: 'market', query: { exchanges : 'binances', currency : 'USDT' }}" :class="{active: exchanges === 'binances', 'tab-market' : true }" name="binances"
                      label="Binances"/>
-        <q-route-tab :to="{name: 'market', query: { exchanges : 'houbi', currency : 'USDT' }}" class="tab-market" name="houbi"
-                     label="Houbi"/>
+<!--        <q-route-tab :to="{name: 'market', query: { exchanges : 'houbi', currency : 'USDT' }}" class="tab-market" name="houbi"-->
+<!--                     label="Houbi"/>-->
       </q-tabs>
     </div>
     <div class="bg-indigo-1 q-py-md" style="padding-right: 100px; padding-left: 100px">
       <div class="row">
-        <div class="col-8">
+        <div class="col-9">
           <q-card
           bordered
         >
@@ -46,11 +46,19 @@
               :data="currencies"
               :is-loading="isLoading"
               :currency="currency"
+              v-if="currencies"
             ></app-table>
           </q-item>
         </q-card>
         </div>
-        <div class="col-4">
+        <div class="col-3">
+          <q-card class="q-ml-sm">
+            <div class="side-currency">
+              <div class="row">
+                <div class="col-8">BTC/USDT</div>
+              </div>
+            </div>
+          </q-card>
         </div>
       </div>
     </div>

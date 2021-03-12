@@ -37,11 +37,13 @@ export default {
       'news',
       'isLoading',
       'error'
+    ]),
+    ...mapState('auth', [
+      'user'
     ])
   },
   mounted () {
-    this.loadNews()
-    console.log(this.news)
+    this.loadNews(this.user.data)
   },
   methods: {
     ...mapActions({

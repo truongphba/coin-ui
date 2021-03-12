@@ -7,19 +7,19 @@
           class="login-form"
           v-bind:style="$q.platform.is.mobile?{'width': '80%'}:{'width':'30%'}"
         >
-          <q-img src="/images/login.jpg"></q-img>
           <q-card-section>
-            <q-form class="q-gutter-md" @submit="login">
+            <q-form class="q-gutter-md" @submit="register">
               <div class="text-red text-body1 text-center">{{ this.error }}</div>
-              <q-input filled v-model="username" label="Username" lazy-rules/>
-
-              <q-input type="password" filled v-model="password" label="Password" lazy-rules/>
-
+              <q-input filled v-model="user.userName" label="Username" lazy-rules :rules="[val => !!val || 'Field is required']"/>
+              <q-input filled v-model="user.name" label="Full Name" lazy-rules :rules="[val => !!val || 'Field is required']"/>
+              <q-input filled type="email" hint="Email" v-model="user.email" label="Email" lazy-rules :rules="[val => !!val || 'Field is required']"/>
+              <q-input filled v-model="user.phone" label="Phone" lazy-rules/>
+              <q-input type="password" filled v-model="user.passwordHash" label="Password" lazy-rules :rules="[val => !!val || 'Field is required']"/>
               <div>
-                <q-btn label="Login" type="submit" color="primary"/>
-                <q-btn style="margin-left: 20px" label="Register" :to="{ name: 'register' }" type="button" color="green"/>
+                <q-btn label="Register" type="submit" color="primary"/>
+                <q-btn style="margin-left: 20px" label="Login" :to="{ name: 'login' }" type="button" color="green"/>
               </div>
-              <router-link :tag="'a'" :to="{ name: 'home' }" style="cursor: pointer; margin-top: 10px">Back to home page</router-link>
+              <router-link :tag="'a'" :to="{ name: 'home' }" style="cursor: pointer;margin-top: 10px">Back to home page</router-link>
             </q-form>
           </q-card-section>
         </q-card>
@@ -35,8 +35,13 @@ import { mapActions } from 'vuex'
 export default {
   data () {
     return {
-      username: '',
-      password: '',
+      user: {
+        userName: '',
+        name: '',
+        phone: '',
+        email: '',
+        passwordHash: ''
+      },
       error: ''
     }
   },
@@ -155,17 +160,18 @@ export default {
   },
   methods: {
     ...mapActions({
-      authRequest: 'auth/authRequest'
+      authRequest: 'auth/register'
     }),
-    async login () {
-      const { username, password } = this
-      this.authRequest({ username, password })
+    async register () {
+      const { user } = this
+      this.authRequest(user)
         .then(() => {
-          this.$router.push({ name: 'home' })
+          this.$router.push({ name: 'login' })
         })
         // eslint-disable-next-line handle-callback-err
         .catch(err => {
-          this.error = 'Username or password is incorrect'
+          console.log(err)
+          this.error = 'Something went wrong, please try again'
         })
     }
   }

@@ -1,6 +1,6 @@
 <template>
   <q-page>
-    <div class="q-py-md" style="padding-left: 100px; padding-right: 100px">
+    <div class="q-py-md" style="padding-left: 100px; padding-right: 100px" v-if="Object.keys(newsDetail).length > 0">
       <div class="row">
         <div class="col-8">
           <div class="new">
@@ -9,7 +9,7 @@
             </div>
             <div class="row">
               <div class="col">
-                <p class="date">{{ newsDetail.created_at }}
+                <p class="date">{{ convertDate }}
                 </p>
               </div>
               <div class="col">
@@ -17,88 +17,23 @@
               </div>
             </div>
           </div>
-<!--          <q-card class="list-news">-->
-<!--            <q-card-section class="news">-->
-<!--              <div class="row">-->
-<!--                <div class="col-8">-->
-<!--                  <p class="title">Quân đội Mỹ có thể từ chối bắn đại bác chia tay Trump</p>-->
-<!--                  <p>Defense One, trang chuyên đưa tin về quốc phòng Mỹ, cuối tuần qua dẫn lời hai quan chức cấp cao cho-->
-<!--                    biết Lầu Năm Góc chưa có kế hoạch tổ chức lễ chia tay với Tổng thống sắp mãn nhiệm Donald Trump.</p>-->
-<!--                </div>-->
-<!--                <div class="col-4">-->
-<!--                  <q-img-->
-<!--                    src="https://i1-vnexpress.vnecdn.net/2021/01/18/BBXu887-1610955683-6880-1610955723.jpg?w=220&h=132&q=100&dpr=2&fit=crop&s=2IrPkijwT3dZTWGDs7aNkg"-->
-<!--                    style="height: 150px; width: 100%"-->
-<!--                  />-->
-<!--                </div>-->
-<!--                <p class="line"></p>-->
-<!--              </div>-->
-<!--            </q-card-section>-->
-<!--            <q-card-section class="news">-->
-<!--              <div class="row">-->
-<!--                <div class="col-8">-->
-<!--                  <p class="title">Quân đội Mỹ có thể từ chối bắn đại bác chia tay Trump</p>-->
-<!--                  <p>Defense One, trang chuyên đưa tin về quốc phòng Mỹ, cuối tuần qua dẫn lời hai quan chức cấp cao cho-->
-<!--                    biết Lầu Năm Góc chưa có kế hoạch tổ chức lễ chia tay với Tổng thống sắp mãn nhiệm Donald Trump.</p>-->
-<!--                </div>-->
-<!--                <div class="col-4">-->
-<!--                  <q-img-->
-<!--                    src="https://i1-vnexpress.vnecdn.net/2021/01/18/BBXu887-1610955683-6880-1610955723.jpg?w=220&h=132&q=100&dpr=2&fit=crop&s=2IrPkijwT3dZTWGDs7aNkg"-->
-<!--                    style="height: 150px; width: 100%"-->
-<!--                  />-->
-<!--                </div>-->
-<!--                <p class="line"></p>-->
-<!--              </div>-->
-<!--            </q-card-section>-->
-<!--            <q-card-section class="news">-->
-<!--              <div class="row">-->
-<!--                <div class="col-8">-->
-<!--                  <p class="title">Quân đội Mỹ có thể từ chối bắn đại bác chia tay Trump</p>-->
-<!--                  <p>Defense One, trang chuyên đưa tin về quốc phòng Mỹ, cuối tuần qua dẫn lời hai quan chức cấp cao cho-->
-<!--                    biết Lầu Năm Góc chưa có kế hoạch tổ chức lễ chia tay với Tổng thống sắp mãn nhiệm Donald Trump.</p>-->
-<!--                </div>-->
-<!--                <div class="col-4">-->
-<!--                  <q-img-->
-<!--                    src="https://i1-vnexpress.vnecdn.net/2021/01/18/BBXu887-1610955683-6880-1610955723.jpg?w=220&h=132&q=100&dpr=2&fit=crop&s=2IrPkijwT3dZTWGDs7aNkg"-->
-<!--                    style="height: 150px; width: 100%"-->
-<!--                  />-->
-<!--                </div>-->
-<!--                <p class="line"></p>-->
-<!--              </div>-->
-<!--            </q-card-section>-->
-<!--            <q-card-section class="news">-->
-<!--              <div class="row">-->
-<!--                <div class="col-8">-->
-<!--                  <p class="title">Quân đội Mỹ có thể từ chối bắn đại bác chia tay Trump</p>-->
-<!--                  <p>Defense One, trang chuyên đưa tin về quốc phòng Mỹ, cuối tuần qua dẫn lời hai quan chức cấp cao cho-->
-<!--                    biết Lầu Năm Góc chưa có kế hoạch tổ chức lễ chia tay với Tổng thống sắp mãn nhiệm Donald Trump.</p>-->
-<!--                </div>-->
-<!--                <div class="col-4">-->
-<!--                  <q-img-->
-<!--                    src="https://i1-vnexpress.vnecdn.net/2021/01/18/BBXu887-1610955683-6880-1610955723.jpg?w=220&h=132&q=100&dpr=2&fit=crop&s=2IrPkijwT3dZTWGDs7aNkg"-->
-<!--                    style="height: 150px; width: 100%"-->
-<!--                  />-->
-<!--                </div>-->
-<!--                <p class="line"></p>-->
-<!--              </div>-->
-<!--            </q-card-section>-->
-<!--            <q-card-section class="news">-->
-<!--              <div class="row">-->
-<!--                <div class="col-8">-->
-<!--                  <p class="title">Quân đội Mỹ có thể từ chối bắn đại bác chia tay Trump</p>-->
-<!--                  <p>Defense One, trang chuyên đưa tin về quốc phòng Mỹ, cuối tuần qua dẫn lời hai quan chức cấp cao cho-->
-<!--                    biết Lầu Năm Góc chưa có kế hoạch tổ chức lễ chia tay với Tổng thống sắp mãn nhiệm Donald Trump.</p>-->
-<!--                </div>-->
-<!--                <div class="col-4">-->
-<!--                  <q-img-->
-<!--                    src="https://i1-vnexpress.vnecdn.net/2021/01/18/BBXu887-1610955683-6880-1610955723.jpg?w=220&h=132&q=100&dpr=2&fit=crop&s=2IrPkijwT3dZTWGDs7aNkg"-->
-<!--                    style="height: 150px; width: 100%"-->
-<!--                  />-->
-<!--                </div>-->
-<!--                <p class="line"></p>-->
-<!--              </div>-->
-<!--            </q-card-section>-->
-<!--          </q-card>-->
+          <q-card class="list-news" v-if="listNews">
+            <q-card-section clickable class="news" v-for="item in listNews" :key="item.id">
+              <div class="row">
+                <div class="col-8">
+                  <router-link style="cursor: pointer" tag="p" class="title" class-active="active" :to="'/news/' + item.id" exact>{{ item.title }}</router-link>
+                  <p> {{ item.description}} </p>
+                </div>
+                <div class="col-4">
+                  <q-img
+                    :src="item.thumbnail"
+                    style="height: 150px; width: 100%"
+                  />
+                </div>
+                <p class="line"></p>
+              </div>
+            </q-card-section>
+          </q-card>
         </div>
         <div class="col-4"></div>
       </div>
@@ -113,7 +48,15 @@ export default {
   name: 'NewDetail',
   data () {
     return {
-      newsDetail: {}
+      newsDetail: {},
+      listNews: []
+    }
+  },
+  watch: {
+    async '$route' (to, from) {
+      await this.loadNews(this.user.data)
+      await this.loadNewsDetail(this.$route.params.id)
+      this.listNews = this.news.filter(element => element.id !== this.newsDetail.id)
     }
   },
   computed: {
@@ -121,11 +64,20 @@ export default {
       'news',
       'isLoading',
       'error'
-    ])
+    ]),
+    ...mapState('auth', [
+      'user'
+    ]),
+    convertDate () {
+      let datetime = this.newsDetail.createdAt
+      datetime = datetime.substring(0, datetime.indexOf('T'))
+      return datetime
+    }
   },
   async mounted () {
-    await this.loadNews()
-    this.loadNewsDetail(this.$route.params.id)
+    await this.loadNews(this.user.data)
+    await this.loadNewsDetail(this.$route.params.id)
+    this.listNews = this.news.filter(element => element.id !== this.newsDetail.id)
   },
   methods: {
     ...mapActions({

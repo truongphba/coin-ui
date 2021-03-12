@@ -8,18 +8,21 @@
           </q-avatar>
           <span class="title"><span class="text-cyan-7">500K</span>oin</span>
         </q-toolbar-title>
-        <div class="account">
-          <q-icon class="member text-orange-14" inline-label name="grade"></q-icon>
+        <q-btn v-if="!user.data" style="margin-right: 10px" :to="{name: 'login'}" :ripple="false" color="secondary" label="Login" no-caps />
+        <div v-else class="account">
           <q-icon inline-label name="account_circle" style="font-size: 25pt">
-            <q-menu
+            <q-menu style="width: 100px"
               transition-show="flip-right"
               transition-hide="flip-left">
               <q-list style="min-width: 100px">
                 <q-item>
-                  <q-item-section>Gold member</q-item-section>
+                  <q-item-section>Name: {{ user.data ? user.data.userName : '' }}</q-item-section>
                 </q-item>
-                <q-item clickable v-close-popup>
-                  <q-item-section>Logout</q-item-section>
+                <q-item>
+                  <q-item-section>Member: {{ getMemberType }}</q-item-section>
+                </q-item>
+                <q-item :to="{name: 'logout'}" clickable>
+                  <q-item-section >Logout</q-item-section>
                 </q-item>
               </q-list>
             </q-menu>
@@ -44,7 +47,7 @@
             label="Market"
             exact
           />
-          <q-route-tab
+          <q-route-tab v-if="user.data"
             :to="{name: 'news'}"
             name="news"
             icon="articles"
@@ -56,7 +59,7 @@
     </q-header>
 
     <q-page-container>
-      <router-view/>
+      <router-view v-if="finished"/>
     </q-page-container>
 
     <q-footer elevated class="bg-deep-purple-10 text-white">
@@ -70,13 +73,50 @@
 </template>
 
 <script>
+import { mapActions, mapState } from 'vuex'
+
 export default {
   name: 'Layout',
   data () {
     return {
       dropMenu: null,
-      tab: null
+      tab: null,
+      finished: false
     }
+  },
+  async mounted () {
+    const isLoggedIn = (
+      typeof localStorage.getItem(process.env.TOKEN_NAME) !== 'undefined' &&
+      localStorage.getItem(process.env.TOKEN_NAME) !== null
+    )
+    if (isLoggedIn) {
+      await this.fetchUserInfo()
+    }
+    this.finished = true
+  },
+  computed: {
+    ...mapState('auth', [
+      'user',
+      'isLoading',
+      'error'
+    ]),
+    getMemberType () {
+      const type = this.user.data ? this.user.data.subscribeType : ''
+      if (type === 1) {
+        return 'Bronze'
+      } else if (type === 2) {
+        return 'Silver'
+      } else if (type === 3) {
+        return 'Gold'
+      } else {
+        return 'None'
+      }
+    }
+  },
+  methods: {
+    ...mapActions({
+      fetchUserInfo: 'auth/fetchUserInfo'
+    })
   }
 }
 </script>

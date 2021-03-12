@@ -12,6 +12,7 @@ import article from './article'
 import contact from './contact'
 import market from './market'
 import news from './news'
+import subscribe from './subscribe'
 
 Vue.use(Vuex)
 
@@ -26,7 +27,8 @@ export default function () {
       article,
       contact,
       market,
-      news
+      news,
+      subscribe
     },
     plugins: [createPersistedState({ key: process.env.DATA_NAME })],
     strict: process.env.DEBUGGING

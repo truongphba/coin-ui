@@ -1,13 +1,18 @@
-// import { httpClient } from 'src/api/http'
-// import { cleanFilter } from 'src/utils/utils'
-import data from 'src/data/news'
+import { httpClient } from 'src/api/http'
 
-export async function loadNews ({ commit }) {
+const endPoint = '/News'
+
+export async function loadNews ({ commit }, user) {
   commit('fetchNewsBegin')
   try {
-    const response = data
+    const response = await httpClient.get(`${endPoint}`)
+    let type = 0
+    if (user.subscribeType) {
+      type = await user.subscribeType
+    }
+    const data = await response.filter(element => element.type <= type)
     commit('fetchNewsSuccess', {
-      data: response
+      data: data
     })
   } catch (error) {
     commit('fetchNewsError', error.response)

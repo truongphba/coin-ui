@@ -1,21 +1,22 @@
-// import { httpClient } from 'src/api/http'
-// import { cleanFilter } from 'src/utils/utils'
-import data from 'src/data/currencies'
+import { httpClient } from 'src/api/http'
+// import data from 'src/data/currencies'
 
-// const endPoint = '/market'
+const endPoint = '/Currencies'
 // eslint-disable-next-line no-unused-vars
 let connection = null
 
 export async function loadMarket ({ commit }, params) {
   commit('fetchMarketBegin')
   const responseData = []
+  const response = await httpClient.get(`${endPoint}`)
+  const data = response.filter(element => element.symbol !== params.currency)
+  if (connection != null) {
+    connection.close()
+  }
   if (params.exchanges === 'bitfinex') {
-    if (params.currency === 'USDT') params.currency = 'USD'
     // eslint-disable-next-line no-const-assign
-    if (connection != null) {
-      connection.close()
-    }
     connection = await new WebSocket('wss://api-pub.bitfinex.com/ws/2')
+    if (params.currency === 'USDT') params.currency = 'USD'
     connection.onopen = (event) => {
       for (let i = 0; i < data.length; i++) {
         if (data[i].symbol !== params.currency) {
@@ -39,7 +40,6 @@ export async function loadMarket ({ commit }, params) {
             }
           }
         }
-        console.log(eventData)
         if (Array.isArray(eventData) && eventData.length > 0) {
           for (let i = 0; i < responseData.length; i++) {
             if (responseData[i].chanId === eventData[0] && eventData[1].length > 1) {
@@ -59,6 +59,50 @@ export async function loadMarket ({ commit }, params) {
         } catch (error) {
           commit('fetchMarketError', error.response)
           return null
+        }
+      }
+    }
+  } else if (params.exchanges === 'binances') {
+    connection = await new WebSocket('wss://stream.binance.com:9443/ws')
+    connection.onopen = (event) => {
+      for (let i = 0; i < 5; i++) {
+        if (data[i].symbol !== params.currency) {
+          const msg = JSON.stringify({
+            method: 'SUBSCRIBE',
+            params:
+                [
+                  data[i].symbol.toLowerCase() + params.currency.toLowerCase() + '@miniTicker'
+                ],
+            id: 1
+          })
+          connection.send(msg)
+        }
+      }
+      connection.onmessage = async (event) => {
+        if (event) {
+          const eventData = JSON.parse(event.data)
+          if (eventData.result === undefined) {
+            for (let i = 0; i < 5; i++) {
+              if ((data[i].symbol + params.currency) === eventData.s) {
+                responseData[i] = data[i]
+                responseData[i].last_price = parseFloat(eventData.c)
+                responseData[i].daily_change = (eventData.c - eventData.o) / eventData.o
+                responseData[i].daily_high = parseFloat(eventData.h)
+                responseData[i].daily_low = parseFloat(eventData.l)
+                responseData[i].daily_volume = eventData.v * eventData.c
+              }
+            }
+          }
+          const result = responseData.filter(element => element !== null)
+          try {
+            commit('fetchMarketBegin')
+            commit('fetchMarketSuccess', {
+              data: result
+            })
+          } catch (error) {
+            commit('fetchMarketError', error.response)
+            return null
+          }
         }
       }
     }
