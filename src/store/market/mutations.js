@@ -22,3 +22,20 @@ export function clearStateFilter (state) {
 export function clearStateError (state) {
   state.error = null
 }
+
+export function fetchSideBegin (state) {
+  state.sideCurrencies = []
+  state.error = null
+  state.isLoading = true
+}
+
+export function fetchSideSuccess (state, { data }) {
+  state.sideCurrencies = JSON.parse(JSON.stringify(data))
+  state.error = null
+  state.isLoading = false
+}
+
+export function fetchSideError (state, error) {
+  state.error = error
+  state.isLoading = false
+}

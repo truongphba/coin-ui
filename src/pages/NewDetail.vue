@@ -2,7 +2,7 @@
   <q-page>
     <div class="q-py-md" style="padding-left: 100px; padding-right: 100px" v-if="Object.keys(newsDetail).length > 0">
       <div class="row">
-        <div class="col-8">
+        <div class="col-9">
           <div class="new">
             <p class="new-title"> {{ newsDetail.title }} </p>
             <div class="content" v-html="newsDetail.content">
@@ -35,7 +35,9 @@
             </q-card-section>
           </q-card>
         </div>
-        <div class="col-4"></div>
+        <div class="col-3">
+          <app-side></app-side>
+        </div>
       </div>
     </div>
   </q-page>
@@ -43,9 +45,13 @@
 
 <script>
 import { mapActions, mapState } from 'vuex'
+import Side from 'src/components/market/Side'
 
 export default {
   name: 'NewDetail',
+  components: {
+    appSide: Side
+  },
   data () {
     return {
       newsDetail: {},

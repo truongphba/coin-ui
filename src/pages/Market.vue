@@ -52,13 +52,7 @@
         </q-card>
         </div>
         <div class="col-3">
-          <q-card class="q-ml-sm">
-            <div class="side-currency">
-              <div class="row">
-                <div class="col-8">BTC/USDT</div>
-              </div>
-            </div>
-          </q-card>
+          <app-side></app-side>
         </div>
       </div>
     </div>
@@ -68,13 +62,15 @@
 
 <script>
 import Table from 'src/components/market/Table'
+import Side from 'src/components/market/Side'
 import RegisterVip from 'src/components/common/RegisterVip'
 import { mapState, mapActions } from 'vuex'
 export default {
   name: 'Market',
   components: {
     'app-table': Table,
-    appRegisterVip: RegisterVip
+    appRegisterVip: RegisterVip,
+    appSide: Side
   },
   data () {
     return {

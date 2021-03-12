@@ -2,7 +2,7 @@
   <q-page>
     <div class="q-py-md" style="padding-left: 100px; padding-right: 100px">
       <div class="row">
-        <div class="col-8">
+        <div class="col-9">
           <q-card class="list-news">
             <q-card-section clickable class="news" v-for="item in news" :key="item.id">
               <div class="row">
@@ -21,7 +21,9 @@
             </q-card-section>
           </q-card>
         </div>
-        <div class="col-4"></div>
+        <div class="col-3">
+          <app-side></app-side>
+        </div>
       </div>
     </div>
   </q-page>
@@ -29,9 +31,13 @@
 
 <script>
 import { mapState, mapActions } from 'vuex'
+import Side from 'src/components/market/Side'
 
 export default {
   name: 'News',
+  components: {
+    appSide: Side
+  },
   computed: {
     ...mapState('news', [
       'news',

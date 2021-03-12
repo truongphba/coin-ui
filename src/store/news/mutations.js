@@ -15,6 +15,23 @@ export function fetchNewsError (state, error) {
   state.isLoading = false
 }
 
+export function fetchOtherNewsBegin (state) {
+  state.otherNews = []
+  state.error = null
+  state.isLoading = true
+}
+
+export function fetchOtherNewsSuccess (state, { data }) {
+  state.otherNews = data
+  state.error = null
+  state.isLoading = false
+}
+
+export function fetchOtherNewsError (state, error) {
+  state.error = error
+  state.isLoading = false
+}
+
 export function clearStateFilter (state) {
   state.filter = {}
 }
